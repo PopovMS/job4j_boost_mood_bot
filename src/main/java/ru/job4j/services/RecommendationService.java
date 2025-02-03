@@ -6,6 +6,7 @@ import org.springframework.beans.factory.BeanNameAware;
 
 public class RecommendationService implements BeanNameAware {
     private String name;
+
     @PostConstruct
     public void init() {
         System.out.println("Bean is going through @PostConstruct init.");
