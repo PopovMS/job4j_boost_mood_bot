@@ -17,4 +17,6 @@ hs_err_pid*
 target
 logs
 out
+config/*
+dev/*
 *.log
