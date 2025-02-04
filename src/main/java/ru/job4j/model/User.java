@@ -1,11 +1,20 @@
 package ru.job4j.model;
 
 import java.util.Objects;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "mb_user")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "client_id")
     private long clientId;
+
+    @Column(name = "chat_id")
     private long chatId;
 
     public User(Long id, long clientId, long chatId) {
@@ -46,16 +55,15 @@ public class User {
         if (this == o) {
             return true;
         }
-        if (o != null && getClass() == o.getClass()) {
-            User user = (User) o;
-            return clientId == user.clientId && chatId == user.chatId && id.equals(user.id);
-        } else {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        User user = (User) o;
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, clientId, chatId);
+        return Objects.hash(id);
     }
 }
