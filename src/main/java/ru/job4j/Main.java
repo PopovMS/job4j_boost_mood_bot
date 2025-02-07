@@ -5,11 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-;
 import ru.job4j.model.*;
-
 import ru.job4j.store.*;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -38,7 +35,7 @@ public class Main {
                         .map(s -> s.split(":"))
                         .filter(array -> array.length > 2)
                         .forEach(vol -> {
-                            data.add(new MoodContent(new Mood(vol[0], Boolean.valueOf(vol[2])), vol[1]));
+                            data.add(new MoodContent(new Mood(vol[0], "true".equals(vol[2])), vol[1]));
                                 }
                         );
             } catch (
