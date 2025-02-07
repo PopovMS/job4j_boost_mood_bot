@@ -20,8 +20,7 @@ public class Mood {
         this.good = good;
     }
 
-    public Mood(){
-
+    public Mood() {
     }
 
     public Long getId() {

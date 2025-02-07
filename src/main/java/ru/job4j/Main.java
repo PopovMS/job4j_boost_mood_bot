@@ -51,8 +51,6 @@ public class Main {
             }
             moodRepository.saveAll(data.stream().map(MoodContent::getMood).toList());
             moodContentRepository.saveAll(data);
-
-            // Инициализация наград
             var awards = new ArrayList<Award>();
             try (
                     BufferedReader read = new BufferedReader(new FileReader("./Award.txt"))) {
