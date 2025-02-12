@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.job4j.model.*;
-import ru.job4j.services.TgRemoteService;
+import ru.job4j.services.TelegramBotService;
 import ru.job4j.store.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,7 +27,7 @@ public class Main {
     @Bean
     public CommandLineRunner initTelegramApi(ApplicationContext ctx) {
         return args -> {
-            var bot = ctx.getBean(TgRemoteService.class);
+            var bot = ctx.getBean(TelegramBotService.class);
             var botsApi = new TelegramBotsApi(DefaultBotSession.class);
             try {
                 botsApi.registerBot(bot);
