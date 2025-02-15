@@ -49,7 +49,7 @@ public class Main {
             }
             var data = new ArrayList<MoodContent>();
             try (
-                    BufferedReader read = new BufferedReader(new FileReader("./MoodContent.txt"))) {
+                    BufferedReader read = new BufferedReader(new FileReader("./MoodCont.txt"))) {
                 read.lines()
                         .map(s -> s.split(":"))
                         .filter(array -> array.length > 2)
