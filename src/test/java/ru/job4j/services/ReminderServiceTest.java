@@ -45,7 +45,5 @@ class ReminderServiceTest {
                 .remindUsers();
         assertThat(result.iterator().next().getMarkup().getKeyboard()
                 .iterator().next().iterator().next().getText()).isEqualTo("Good");
-
-
     }
 }
