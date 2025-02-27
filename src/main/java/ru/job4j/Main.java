@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.LongPollingBot;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import ru.job4j.model.*;
-import ru.job4j.services.TelegramBotService;
 import ru.job4j.store.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -27,10 +27,10 @@ public class Main {
     @Bean
     public CommandLineRunner initTelegramApi(ApplicationContext ctx) {
         return args -> {
-            var bot = ctx.getBean(TelegramBotService.class);
+            var bot = ctx.getBean("TelegramBot");
             var botsApi = new TelegramBotsApi(DefaultBotSession.class);
             try {
-                botsApi.registerBot(bot);
+                botsApi.registerBot((LongPollingBot) bot);
                 System.out.println("Бот успешно зарегистрирован");
             } catch (TelegramApiException e) {
                 e.printStackTrace();
