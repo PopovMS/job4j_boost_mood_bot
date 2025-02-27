@@ -4,11 +4,15 @@ import org.springframework.data.repository.CrudRepository;
 import ru.job4j.model.User;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findAll();
 
-    Optional<User> findByClientId(Long id);
+    default List<User> findByClientId(Long clientId) {
+        return findAll().stream()
+                .filter(user -> user.getClientId() == clientId)
+                .collect(Collectors.toList());
+    }
 
 }

@@ -91,6 +91,7 @@ public class MoodService {
                 .filter(vol -> vol.getUser().getClientId() == clientId)
                 .toList();
         var content = new Content(chatId);
+        System.out.println("Hello, mother fucker!");
         content.setText(formatAwardLogs(achievements, "Награды"));
         return Optional.of(content);
     }

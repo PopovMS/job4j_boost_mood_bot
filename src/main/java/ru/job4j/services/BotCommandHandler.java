@@ -27,20 +27,21 @@ public class BotCommandHandler {
         String command = message.getText();
         long chatId = message.getChatId();
         long userId = message.getFrom().getId();
-        switch (command) {
-            case "/start" -> handleStartCommand(chatId, userId);
-            case "/week_mood_log" -> moodService.weekMoodLogCommand(chatId, chatId);
-            case "/month_mood_log" -> moodService.monthMoodLogCommand(chatId, chatId);
-            case "/award" -> moodService.awards(chatId, chatId);
-            default -> Optional.empty();
-        }
-        return Optional.empty();
+        return switch (command) {
+                case "/start" -> handleStartCommand(chatId, userId);
+                case "/week_mood_log" -> moodService.weekMoodLogCommand(chatId, userId);
+                case "/month_mood_log" -> moodService.monthMoodLogCommand(chatId, userId);
+                case "/award" -> moodService.awards(chatId, userId);
+                default -> Optional.empty();
+        };
     }
 
     Optional<Content> handleCallback(CallbackQuery callback) {
         var moodId = Long.valueOf(callback.getData());
         var user = userRepository.findByClientId(callback.getFrom().getId());
-        return user.map(value -> moodService.chooseMood(value, moodId));
+        return user.stream()
+                .map(value -> moodService.chooseMood(value, moodId))
+                .findFirst();
     }
 
     private Optional<Content> handleStartCommand(long chatId, Long clientId) {

@@ -23,6 +23,11 @@ public class User {
         this.chatId = chatId;
     }
 
+    public User(long clientId, long chatId) {
+        this.clientId = clientId;
+        this.chatId = chatId;
+    }
+
     public User() {
     }
 
@@ -59,7 +64,13 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(id, user.id);
+        return Objects.equals(id, user.id)
+                && Objects.equals(clientId, user.clientId);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %s, ClientID: %s, chatID: %s", id, clientId, chatId);
     }
 
     @Override
