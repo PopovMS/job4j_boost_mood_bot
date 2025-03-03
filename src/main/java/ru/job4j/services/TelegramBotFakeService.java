@@ -1,5 +1,6 @@
 package ru.job4j.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -11,8 +12,13 @@ import ru.job4j.sending.SentContent;
 @Service("TelegramBot")
 @Conditional(OnFakeCondition.class)
 public class TelegramBotFakeService extends TelegramLongPollingBot implements SentContent {
-    private static final String BOT_NAME = "FakeName";
-    private static final String BOT_TOKEN = "token";
+    private final String botName;
+
+    public TelegramBotFakeService(@Value("${telegram.bot.name}") String botName,
+                                    @Value("${telegram.bot.token}") String botToken) {
+        super(botToken);
+        this.botName = botName;
+    }
 
     @Override
     public void sent(Content content) {
@@ -24,11 +30,6 @@ public class TelegramBotFakeService extends TelegramLongPollingBot implements Se
 
     @Override
     public String getBotUsername() {
-        return BOT_NAME;
-    }
-
-    @Override
-    public String getBotToken() {
-        return BOT_TOKEN;
+        return botName;
     }
 }
