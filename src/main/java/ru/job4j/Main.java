@@ -5,6 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -17,6 +19,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Configuration
+@EnableAspectJAutoProxy
 @EnableScheduling
 @SpringBootApplication
 public class Main {
