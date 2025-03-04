@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAspect.class);
 
-    @Pointcut("execution(* job4j.services.*.*(..))")
+    @Pointcut("execution(* ru.job4j.services.*.*(..))")
     public void serviceLayer() {
     }
 
