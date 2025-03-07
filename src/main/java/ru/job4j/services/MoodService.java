@@ -9,6 +9,7 @@ import ru.job4j.store.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,8 @@ public class MoodService {
         mood.setId(moodId);
         MoodLog moodLog = new MoodLog();
         LocalDateTime currentDateTime = LocalDateTime.now();
-        long currentDateTimeFormat = Long.parseLong(currentDateTime.format(formatter));
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(currentDateTime, ZoneId.systemDefault());
+        long currentDateTimeFormat = zonedDateTime.toInstant().toEpochMilli();
         moodLog.setMood(mood);
         moodLog.setUser(user);
         moodLog.setCreatedAt(currentDateTimeFormat);
@@ -52,7 +54,8 @@ public class MoodService {
 
     public Optional<Content> weekMoodLogCommand(long chatId, Long clientId) {
         LocalDateTime weeklyLog = LocalDateTime.now().minusDays(7);
-        long weeklyLogDate = Long.parseLong(weeklyLog.format(formatter));
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(weeklyLog, ZoneId.systemDefault());
+        long weeklyLogDate = zonedDateTime.toInstant().toEpochMilli();
         List<MoodLog> filteredLog = moodLogRepository.findAll().stream()
                 .filter(vol -> vol.getUser().getClientId() == clientId)
                 .filter(vol -> vol.getCreatedAt() >= weeklyLogDate)
@@ -64,7 +67,8 @@ public class MoodService {
 
     public Optional<Content> monthMoodLogCommand(long chatId, Long clientId) {
         LocalDateTime monthlyLog = LocalDateTime.now().minusDays(30);
-        long monthlyLogDate = Long.parseLong(monthlyLog.format(formatter));
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(monthlyLog, ZoneId.systemDefault());
+        long monthlyLogDate = zonedDateTime.toInstant().toEpochMilli();
         List<MoodLog> filteredLog = moodLogRepository.findAll().stream()
                 .filter(vol -> vol.getUser().getClientId() == clientId)
                 .filter(vol -> vol.getCreatedAt() >= monthlyLogDate)
@@ -91,7 +95,6 @@ public class MoodService {
                 .filter(vol -> vol.getUser().getClientId() == clientId)
                 .toList();
         var content = new Content(chatId);
-        System.out.println("Hello, mother fucker!");
         content.setText(formatAwardLogs(achievements, "Награды"));
         return Optional.of(content);
     }
