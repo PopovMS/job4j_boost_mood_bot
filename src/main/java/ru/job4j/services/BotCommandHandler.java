@@ -3,10 +3,12 @@ package ru.job4j.services;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import ru.job4j.action.*;
 import ru.job4j.content.Content;
 import ru.job4j.model.User;
 import ru.job4j.store.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,13 +29,11 @@ public class BotCommandHandler {
         String command = message.getText();
         long chatId = message.getChatId();
         long userId = message.getFrom().getId();
-        return switch (command) {
-                case "/start" -> handleStartCommand(chatId, userId);
-                case "/week_mood_log" -> moodService.weekMoodLogCommand(chatId, userId);
-                case "/month_mood_log" -> moodService.monthMoodLogCommand(chatId, userId);
-                case "/award" -> moodService.awards(chatId, userId);
-                default -> Optional.empty();
-        };
+        return createActions().stream()
+                .filter(value -> command.equals(value.name()))
+                .map(value ->   value.execute(chatId, userId))
+                .findFirst()
+                .orElse(Optional.empty());
     }
 
     Optional<Content> handleCallback(CallbackQuery callback) {
@@ -44,17 +44,14 @@ public class BotCommandHandler {
                 .findFirst();
     }
 
-    private Optional<Content> handleStartCommand(long chatId, Long clientId) {
-        var user = new User();
-        user.setClientId(clientId);
-        user.setChatId(chatId);
-        if (userRepository.findByClientId(clientId).isEmpty()) {
-            userRepository.save(user);
-        }
-        var content = new Content(user.getChatId());
-        content.setText("Как настроение?");
-        content.setMarkup(tgUI.buildButtons());
-        return Optional.of(content);
+    private List<HandleCommand> createActions() {
+        return List.of(
+                new HandleStartCommand(userRepository, tgUI),
+                new HandleWeekMoodLogCommand(moodService),
+                new HandleWeekMoodLogCommand(moodService),
+                new HandleMonthMoodLogCommand(moodService),
+                new HandleAwardCommand(moodService)
+        );
     }
 }
 
