@@ -1,13 +1,14 @@
 package ru.job4j.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.job4j.content.Content;
 import ru.job4j.model.User;
 import ru.job4j.services.TgUI;
 import ru.job4j.store.UserRepository;
-
 import java.util.Optional;
 
+@Component
 public class HandleStartCommand implements HandleCommand {
     private final UserRepository userRepository;
     private final TgUI tgUI;
@@ -29,6 +30,7 @@ public class HandleStartCommand implements HandleCommand {
         user.setClientId(userId);
         user.setChatId(chatId);
         if (userRepository.findByClientId(userId).isEmpty()) {
+
             userRepository.save(user);
         }
         var content = new Content(user.getChatId());

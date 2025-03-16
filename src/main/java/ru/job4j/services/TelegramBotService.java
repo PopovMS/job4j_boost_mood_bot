@@ -18,13 +18,16 @@ import ru.job4j.sending.SentContent;
 public class TelegramBotService extends TelegramLongPollingBot implements SentContent {
     private final BotCommandHandler handler;
     private final String botName;
+    private final TgUI tgUI;
 
     public TelegramBotService(@Value("${telegram.bot.name}") String botName,
                               @Value("${telegram.bot.token}") String botToken,
-                              BotCommandHandler handler) {
+                              BotCommandHandler handler,
+                              TgUI tgUI) {
         super(botToken);
         this.handler = handler;
         this.botName = botName;
+        this.tgUI = tgUI;
     }
 
     @Override
@@ -69,6 +72,15 @@ public class TelegramBotService extends TelegramLongPollingBot implements SentCo
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setText(content.getText());
                 sendMessage.setChatId(content.getChatId());
+                sendMessage.setText(content.getText());
+                this.execute(sendMessage);
+            }
+            if (content.getRMarkup() == null) {
+                content.setRMarkup(tgUI.buildMenuButtons());
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setReplyMarkup(content.getRMarkup());
+                sendMessage.setChatId(content.getChatId());
+                sendMessage.setText("Выбери пункт меню:");
                 this.execute(sendMessage);
             }
         } catch (TelegramApiException e) {

@@ -2,6 +2,7 @@ package ru.job4j.content;
 
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ public class Content {
     private String text;
     private InputFile photo;
     private InlineKeyboardMarkup markup;
+    private ReplyKeyboardMarkup rMarkup;
     private InputFile audio;
     private InputFile video;
 
@@ -45,6 +47,14 @@ public class Content {
         this.markup = markup;
     }
 
+    public ReplyKeyboardMarkup getRMarkup() {
+        return rMarkup;
+    }
+
+    public void setRMarkup(ReplyKeyboardMarkup rMarkup) {
+        this.rMarkup = rMarkup;
+    }
+
     public InputFile getAudio() {
         return audio;
     }
@@ -73,6 +83,7 @@ public class Content {
         return (Objects.equals(chatId, content.chatId)
                 && Objects.equals(text, content.text)
                 && Objects.equals(markup, content.markup)
+                && Objects.equals(rMarkup, content.rMarkup)
                 && Objects.equals(audio, content.audio)
                 && Objects.equals(photo, content.photo)
                 && Objects.equals(video, content.video)
@@ -91,6 +102,7 @@ public class Content {
                 + ", text='" + text + '\''
                 + ", photo=" + photo
                 + ", markup=" + markup
+                + ", rMarkup=" + rMarkup
                 + ", audio=" + audio
                 + ", video=" + video
                 + '}';
